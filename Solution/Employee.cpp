@@ -94,9 +94,7 @@ float Coordinator(Student Emp[]){
     fstream infile("Student.txt",ios::in);
     int i=0;
     while(!infile.eof()){
-		
 		count++;
-		
         infile >> studentID;  
         infile>>firstName;
         infile>>lastName;
@@ -111,6 +109,7 @@ float Coordinator(Student Emp[]){
     
   	//Switch case
 	switch(choice){
+		//print all student
   		case 1:{
   			cout<<endl<<"Student List"<<endl;
         	cout<<"**********************"<<endl<<endl;
@@ -120,6 +119,7 @@ float Coordinator(Student Emp[]){
 			break;
 		}
 		case 2:{
+			//print the sorting data 
 			bubbleSort(cgpaArr, size-1);// sort the data by cgpa
 			cout<<endl<<"Student List"<<endl;
        		cout<<"**********************"<<endl<<endl;
@@ -131,7 +131,44 @@ float Coordinator(Student Emp[]){
 				}
 			}
 			break;
-		}	
+		}
+		//delete the record 
+		case 3:{
+			int found=0;
+			
+			string input;
+			string id,line;
+			
+			ifstream myfile;
+			myfile.open("Student.txt");
+			
+			ofstream temp;
+			temp.open("temp.txt");
+			
+			cout<<endl<<"##################"<<endl<<"Enter the studentID: ";
+			cin>>input;
+			
+			while(myfile>>id){
+				getline(myfile,line);
+				if(id==input){
+					found=1;
+				}
+				else{
+					temp<<id<<setw(10)<<line<<endl;
+				}
+			}
+			if(found==0){
+				cout<<"Student info could not find"<<endl;
+			}
+			else{
+				myfile.close();
+					temp.close();
+					remove("Student.txt");
+					rename("temp.txt", "Student.txt");
+			}
+			break;
+		}
+		default:cout<<"Wrong choice "<<endl;	
 	}
     
 }
@@ -191,7 +228,7 @@ void studentFunction(Student Emp[]){
 		cin>>cgpa;
 		
 		ofstream file_out("Student.txt",ios::app);
-		file_out<<2<<sId<<setw(10)<<firstN<<" "<<lastN<<" "<<cgpa<<endl;
+		file_out<<sId<<setw(10)<<firstN<<" "<<lastN<<" "<<cgpa<<endl;
 		
 	}
 	//finding one particular student
